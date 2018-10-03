@@ -11,6 +11,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import br.com.lojatech.domain.Categoria;
+import br.com.lojatech.dto.CategoriaDTO;
 import br.com.lojatech.repository.CategoriaRepository;
 import br.com.lojatech.services.exception.DataIntegrityException;
 import br.com.lojatech.services.exception.ObjectNotFoundException;
@@ -41,14 +42,17 @@ public class CategoriaService {
 	
 	public Categoria save(Categoria obj) {
 		obj.setId(null);
-		return repository.save(obj);
+		return  repository.save(obj);
 	}
 	
 	public Categoria update(Categoria obj) {
-		find(obj.getId());
+		Categoria newObj = find(obj.getId());
+		updateData(newObj, obj);
 		return repository.save(obj);
 	}
 	
+	
+
 	public void delete(Integer id) {
 		find(id);
 		try {
@@ -56,6 +60,15 @@ public class CategoriaService {
 		}catch(DataIntegrityViolationException e){
 			throw new DataIntegrityException("Não é possivel deletar uma categoria que tnha produtos");
 		}
+	}
+	
+	public Categoria fromDTO(CategoriaDTO dto) {
+		return new Categoria(dto.getId(), dto.getNome());
+	}
+	
+	private void updateData(Categoria newObj, Categoria obj) {
+		newObj.setNome(obj.getName());
+		
 	}
 	
 

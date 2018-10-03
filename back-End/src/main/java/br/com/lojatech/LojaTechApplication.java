@@ -13,5 +13,6 @@ public class LojaTechApplication{
 		SpringApplication.run(LojaTechApplication.class, args);
 	}
 
+	
 
 }
